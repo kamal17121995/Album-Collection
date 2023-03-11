@@ -29,7 +29,7 @@ const Albums = (props) => {
     .map((album, index) => {
       return (
         <tr key={album.id}>
-          <td className='text-center'>{index + 1}</td>
+          <td className='text-center'>{index}</td>
           <td className='text-center' colSpan='2'>
             {album.title}
           </td>
@@ -38,6 +38,7 @@ const Albums = (props) => {
               <Link
                 style={{ color: "white", textDecoration: "none" }}
                 to={`/album/${album.id}`}
+                state={{ albm: album }}
               >
                 Edit
               </Link>

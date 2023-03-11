@@ -1,20 +1,25 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import Button from "react-bootstrap/Button";
+import Modal from 'react-bootstrap/Modal';
+
 export default function UpdateAlbum(props) {
   const { id } = useParams();
+  const location = useLocation();
+  const { albm } = location.state;
+  console.log({ albm }, 'hie')
   const { albums, handleChangeAlbum } = props;
-  let [album, setAlbum] = useState({ title: "", userId: "" });
-  console.log(album);
-  let [title, setTitle] = useState(album.title);
-  let [userId, setUserId] = useState(album.userId);
-/// we are using the code in this file to update the albums 
-  useEffect(() => {
-    let album = albums.find((elem) => elem.id === id);
-    setAlbum(album);
-    setTitle(album.title);
-    setUserId(album.userId);
-  }, [id, albums]);
+  // let [album, setAlbum] = useState({ title: "", userId: "" });
+
+  let [title, setTitle] = useState(albm.title);
+  let [userId, setUserId] = useState(albm.userId);
+  /// we are using the code in this file to update the albums 
+  // useEffect(() => {
+  //   let album = albums.find((elem) => elem.id === id);
+  //   setAlbum(album);
+  //   setTitle(album.title);
+  //   setUserId(album.userId);
+  // }, [id, albums]);
 
   const updateUser = () => {
     fetch(`https://jsonplaceholder.typicode.com/albums/${id}`, {
@@ -31,11 +36,10 @@ export default function UpdateAlbum(props) {
       .then((response) => response.json())
       .then((data) => {
         let updatedAlbums = albums.filter((album) => {
-          console.log(album);
           return album.id !== id;
         });
         updatedAlbums.push(data);
-        handleChangeAlbum(updatedAlbums);
+        handleChangeAlbum(updatedAlbums, 'new data');
       });
   };
 
@@ -48,26 +52,41 @@ export default function UpdateAlbum(props) {
   }
 
   return (
-    <div>
-      <label htmlFor='title'>𝑻𝒊𝒕𝒍𝒆</label>
-      <input
-        type='text'
-        value={title}
-        name='title'
-        onChange={(e) => {
-          handleChange(e);
-        }}
-      />
-      <label htmlFor='title'>userId</label>
-      <input
-        type='text'
-        value={userId}
-        name='userId'
-        onChange={(e) => {
-          handleChange(e);
-        }}
-      />
-      <Button onClick={updateUser}> 𝐒𝐮𝐛𝐦𝐢𝐭</Button>
-    </div>
+    <Modal show={show} onHide={handleClose}>
+      <Modal.Header closeButton>
+        <Modal.Title>Modal heading</Modal.Title>
+      </Modal.Header>
+      <Modal.Body><div>
+        <label htmlFor='title'>𝑻𝒊𝒕𝒍𝒆</label>
+        <input
+          type='text'
+          value={title}
+          name='title'
+          onChange={(e) => {
+            handleChange(e);
+          }}
+        />
+        <label htmlFor='title'>userId</label>
+        <input
+          type='text'
+          value={userId}
+          name='userId'
+          onChange={(e) => {
+            handleChange(e);
+          }}
+        />
+        <Button onClick={updateUser}> 𝐒𝐮𝐛𝐦𝐢𝐭</Button>
+      </div>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button variant="secondary" onClick={handleClose}>
+          Close
+        </Button>
+        <Button variant="primary" onClick={handleClose}>
+          Save Changes
+        </Button>
+      </Modal.Footer>
+    </Modal>
+
   );
 }
