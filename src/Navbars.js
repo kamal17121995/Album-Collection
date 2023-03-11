@@ -18,7 +18,6 @@ function Navbars() {
                 <Navbar.Brand ><Link to="/" style={style}>𝗛𝗼𝗺𝗲</Link></Navbar.Brand>
                 <Nav className="me-auto">
                     <Nav.Link><Link to="/album" style={style}>𝘼𝙡𝙗𝙪𝙢</Link></Nav.Link>
-                    <Nav.Link><Link to="/newalbum" style={style}> +Ａｄｄ Ａｌｂｕｍ</Link></Nav.Link>
                 </Nav>
             </Container>
         </Navbar>
